@@ -18,11 +18,11 @@ BEGIN
 		nome NVARCHAR(255) NOT NULL,        -- Nome do usuário
 		cpf CHAR(11) NOT NULL,              -- CPF do usuário
 		telefone CHAR(11) NOT NULL,         -- Telefone do usuário
-		data_nascimento DATE,      -- Data de nascimento (campo LocalDate)
 		email NVARCHAR(255) NOT NULL,       -- Email do usuário
 		senha NVARCHAR(255) NOT NULL,       -- Senha do usuário
 		tipo NVARCHAR(45),         -- Tipo de usuário (usando enum como string)
 		ativo BIT,                          -- Status ativo ou inativo
+        data_cadastro timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		imagem_url NVARCHAR(255)            -- URL da imagem do usuário
 	);
 END
@@ -36,7 +36,7 @@ GO
 IF OBJECT_ID('dbo.Endereco', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Endereco (
-        idEndereco INT IDENTITY(1,1) PRIMARY KEY,
+        id INT IDENTITY(1,1) PRIMARY KEY,
         apelido VARCHAR(100) NOT NULL,
         cep CHAR(8) NOT NULL,
         rua VARCHAR(100) NOT NULL,
@@ -45,8 +45,8 @@ BEGIN
         bairro VARCHAR(100) NOT NULL,
         cidade VARCHAR(100) NOT NULL,
         uf CHAR(2) NOT NULL,
-        fkUsuario INT NOT NULL,
-        FOREIGN KEY (fkUsuario) REFERENCES dbo.Usuario (id)
+        usuario INT NOT NULL,
+        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
     );
 END
 GO
@@ -55,16 +55,18 @@ GO
 IF OBJECT_ID('dbo.Produto', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Produto (
-        idProduto INT IDENTITY(1,1) PRIMARY KEY,
+        id INT IDENTITY(1,1) PRIMARY KEY,
         nome VARCHAR(100) NOT NULL,
         tamanho VARCHAR(4) NOT NULL,
         categoria VARCHAR(45) NOT NULL,
         marca VARCHAR(45) NOT NULL,
         preco DECIMAL(18, 2) NOT NULL,
-        descricao VARCHAR(255) NOT NULL,
-        qtdEstoque INT NOT NULL,
-        status_produto VARCHAR(10) NOT NULL
-            CHECK (status_produto IN ('Reservado', 'Disponível', 'Vendido'))
+        descricao NVARCHAR(1500) NOT NULL,
+        qtd_estoque INT NOT NULL,
+        data_cadastro timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        data_venda DATETIME,
+        status VARCHAR(10) NOT NULL
+            CHECK (status_produto IN ('Reservado', 'Disponível', 'Vendido')),
     );
 END
 GO
@@ -73,13 +75,13 @@ GO
 IF OBJECT_ID('dbo.Entrega', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Entrega (
-        idEntrega INT IDENTITY(1,1) PRIMARY KEY,
-        previstoPara DATE NOT NULL,
-        status_entrega VARCHAR(45) NOT NULL,
-        codigoRastreio VARCHAR(45) NOT NULL,
-        dataHoraEnvio DATETIME NOT NULL,
-        fkEndereco INT NOT NULL,
-        FOREIGN KEY (fkEndereco) REFERENCES dbo.Endereco (idEndereco)
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        previsto_para DATE NOT NULL,
+        status VARCHAR(45) NOT NULL,
+        codigo_rastreio VARCHAR(45) NOT NULL,
+        data_hora_envio DATETIME NOT NULL,
+        endereco INT NOT NULL,
+        FOREIGN KEY (endereco) REFERENCES dbo.Endereco (id)
     );
 END
 GO
@@ -88,16 +90,16 @@ GO
 IF OBJECT_ID('dbo.Pedido', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Pedido (
-        idPedido INT IDENTITY(1,1) PRIMARY KEY,
-        dataHora DATETIME NOT NULL,
-        tipoFrete VARCHAR(45) NOT NULL,
-        valorFrete DECIMAL(18, 2) NOT NULL,
-        valorTotal DECIMAL(18, 2) NOT NULL,
-        status_pedido VARCHAR(45) NOT NULL,
-        fkUsuario INT NOT NULL,
-        fkEntrega INT NOT NULL,
-        FOREIGN KEY (fkEntrega) REFERENCES dbo.Entrega (idEntrega),
-        FOREIGN KEY (fkUsuario) REFERENCES dbo.Usuario (id)
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        data_hora DATETIME NOT NULL,
+        data_pagamento DATETIME NOT NULL,
+        data_conclusao DATEIME NOT NULL,
+        tipo_frete VARCHAR(45) NOT NULL,
+        valor_frete DECIMAL(18, 2) NOT NULL,
+        valor_total DECIMAL(18, 2) NOT NULL,
+        status VARCHAR(45) NOT NULL,
+        usuario INT NOT NULL,
+        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
     );
 END
 GO
@@ -105,14 +107,14 @@ GO
 -- Criação da tabela itemPedido
 IF OBJECT_ID('dbo.itemPedido', 'U') IS NULL
 BEGIN
-    CREATE TABLE dbo.itemPedido (
+    CREATE TABLE dbo.itemPedido  (
         id INT IDENTITY(1,1),
-        fkPedido INT NOT NULL,
-        fkProduto INT NOT NULL,
+        pedido INT NOT NULL,
+        produto INT NOT NULL,
         quantidade INT NOT NULL,
-        PRIMARY KEY (id, fkPedido, fkProduto),
-        FOREIGN KEY (fkPedido) REFERENCES dbo.Pedido (idPedido),
-        FOREIGN KEY (fkProduto) REFERENCES dbo.Produto (idProduto)
+        PRIMARY KEY (id, pedido, produto),
+        FOREIGN KEY (pedido) REFERENCES dbo.Pedido (id),
+        FOREIGN KEY (produto) REFERENCES dbo.Produto (id)
     );
 END
 GO
@@ -121,11 +123,11 @@ GO
 IF OBJECT_ID('dbo.Feedback', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Feedback (
-        idFeedback INT IDENTITY(1,1) PRIMARY KEY,
+        id INT IDENTITY(1,1) PRIMARY KEY,
         nota INT NOT NULL,
         comentario VARCHAR(255),
-        fkUsuario INT NOT NULL,
-        FOREIGN KEY (fkUsuario) REFERENCES dbo.Usuario (id)
+        usuario INT NOT NULL,
+        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
     );
 END
 GO
@@ -134,11 +136,11 @@ GO
 IF OBJECT_ID('dbo.Imagem', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Imagem (
-        idImagem INT IDENTITY(1,1),
+        id INT IDENTITY(1,1),
         imagem_url VARCHAR(500) NOT NULL,
         Produto_idProduto INT NOT NULL,
-        PRIMARY KEY (idImagem, Produto_idProduto),
-        FOREIGN KEY (Produto_idProduto) REFERENCES dbo.Produto (idProduto)
+        PRIMARY KEY (id, Produto_idProduto),
+        FOREIGN KEY (Produto_idProduto) REFERENCES dbo.Produto (id)
     );
 END
 GO
