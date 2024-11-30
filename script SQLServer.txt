@@ -22,7 +22,7 @@ BEGIN
 		senha NVARCHAR(255) NOT NULL,       -- Senha do usuário
 		tipo NVARCHAR(45),         -- Tipo de usuário (usando enum como string)
 		ativo BIT,                          -- Status ativo ou inativo
-        data_cadastro timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        data_cadastro DATE ,
 		imagem_url NVARCHAR(255)            -- URL da imagem do usuário
 	);
 END
@@ -63,8 +63,8 @@ BEGIN
         preco DECIMAL(18, 2) NOT NULL,
         descricao NVARCHAR(1500) NOT NULL,
         qtd_estoque INT NOT NULL,
-        data_cadastro timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        data_venda DATETIME,
+        data_cadastro DATE,
+        data_venda DATE,
         status VARCHAR(10) NOT NULL
             CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO')),
     );
@@ -79,7 +79,7 @@ BEGIN
         previsto_para DATE NOT NULL,
         status VARCHAR(45) NOT NULL,
         codigo_rastreio VARCHAR(45) NOT NULL,
-        data_hora_envio DATETIME NOT NULL,
+        data_hora_envio TIMESTAMP NOT NULL,
         endereco INT NOT NULL,
         FOREIGN KEY (endereco) REFERENCES dbo.Endereco (id)
     );
@@ -91,9 +91,9 @@ IF OBJECT_ID('dbo.Pedido', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Pedido (
         id INT IDENTITY(1,1) PRIMARY KEY,
-        data_hora DATETIME NOT NULL,
-        data_pagamento DATETIME NOT NULL,
-        data_conclusao DATEIME NOT NULL,
+        data_hora timestamp NOT NULL,
+        data_pagamento DATE NOT NULL,
+        data_conclusao DATE NOT NULL,
         tipo_frete VARCHAR(45) NOT NULL,
         valor_frete DECIMAL(18, 2) NOT NULL,
         valor_total DECIMAL(18, 2) NOT NULL,
