@@ -1,8 +1,7 @@
-
 -- Verifica e exclui as tabelas caso já existam, para evitar conflitos
 IF OBJECT_ID('dbo.Imagem', 'U') IS NOT NULL DROP TABLE dbo.Imagem;
 IF OBJECT_ID('dbo.Feedback', 'U') IS NOT NULL DROP TABLE dbo.Feedback;
-IF OBJECT_ID('dbo.itemPedido', 'U') IS NOT NULL DROP TABLE dbo.itemPedido;
+IF OBJECT_ID('dbo.item_pedido', 'U') IS NOT NULL DROP TABLE dbo.item_pedido;
 IF OBJECT_ID('dbo.Pedido', 'U') IS NOT NULL DROP TABLE dbo.Pedido;
 IF OBJECT_ID('dbo.Entrega', 'U') IS NOT NULL DROP TABLE dbo.Entrega;
 IF OBJECT_ID('dbo.Produto', 'U') IS NOT NULL DROP TABLE dbo.Produto;
@@ -15,11 +14,11 @@ IF OBJECT_ID('dbo.Usuario', 'U') IS NULL
 BEGIN
 		CREATE TABLE dbo.usuario (
 		id INT IDENTITY(1,1) PRIMARY KEY,  -- Coluna id com auto incremento
-		nome NVARCHAR(255) NOT NULL,        -- Nome do usuário
+		nome VARCHAR(255) NOT NULL,        -- Nome do usuário
 		cpf CHAR(11) NOT NULL,              -- CPF do usuário
 		telefone CHAR(11) NOT NULL,         -- Telefone do usuário
-		email NVARCHAR(255) NOT NULL,       -- Email do usuário
-		senha NVARCHAR(255) NOT NULL,       -- Senha do usuário
+		email VARCHAR(255) NOT NULL,       -- Email do usuário
+		senha VARCHAR(255) NOT NULL,       -- Senha do usuário
 		tipo NVARCHAR(45),         -- Tipo de usuário (usando enum como string)
 		ativo BIT,                          -- Status ativo ou inativo
         data_cadastro DATE ,
@@ -45,8 +44,8 @@ BEGIN
         bairro VARCHAR(100) NOT NULL,
         cidade VARCHAR(100) NOT NULL,
         uf CHAR(2) NOT NULL,
-        usuario INT NOT NULL,
-        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
+        usuario_id INT NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
     );
 END
 GO
@@ -57,11 +56,11 @@ BEGIN
     CREATE TABLE dbo.Produto (
         id INT IDENTITY(1,1) PRIMARY KEY,
         nome VARCHAR(100) NOT NULL,
-        tamanho VARCHAR(4) NOT NULL,
+        tamanho VARCHAR(10) NOT NULL,
         categoria VARCHAR(45) NOT NULL,
-        marca VARCHAR(45) NOT NULL,
+        marca VARCHAR(45),
         preco DECIMAL(18, 2) NOT NULL,
-        descricao NVARCHAR(1500) NOT NULL,
+        descricao TEXT NOT NULL,
         qtd_estoque INT NOT NULL,
         data_cadastro DATE,
         data_venda DATE,
@@ -80,8 +79,8 @@ BEGIN
         status VARCHAR(45) NOT NULL,
         codigo_rastreio VARCHAR(45) NOT NULL,
         data_hora_envio TIMESTAMP NOT NULL,
-        endereco INT NOT NULL,
-        FOREIGN KEY (endereco) REFERENCES dbo.Endereco (id)
+        endereco_id INT NOT NULL,
+        FOREIGN KEY (endereco_id) REFERENCES dbo.Endereco (id)
     );
 END
 GO
@@ -98,23 +97,23 @@ BEGIN
         valor_frete DECIMAL(18, 2) NOT NULL,
         valor_total DECIMAL(18, 2) NOT NULL,
         status VARCHAR(45) NOT NULL,
-        usuario INT NOT NULL,
-        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
+        usuario_id INT NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
     );
 END
 GO
 
--- Criação da tabela itemPedido
-IF OBJECT_ID('dbo.itemPedido', 'U') IS NULL
+-- Criação da tabela item_pedido
+IF OBJECT_ID('dbo.item_pedido', 'U') IS NULL
 BEGIN
-    CREATE TABLE dbo.itemPedido  (
+    CREATE TABLE dbo.item_pedido  (
         id INT IDENTITY(1,1),
-        pedido INT NOT NULL,
-        produto INT NOT NULL,
+        pedido_id INT NOT NULL,
+        produto_id INT NOT NULL,
         quantidade INT NOT NULL,
-        PRIMARY KEY (id, pedido, produto),
-        FOREIGN KEY (pedido) REFERENCES dbo.Pedido (id),
-        FOREIGN KEY (produto) REFERENCES dbo.Produto (id)
+        PRIMARY KEY (id, pedido_id, produto_id),
+        FOREIGN KEY (pedido_id) REFERENCES dbo.Pedido (id),
+        FOREIGN KEY (produto_id) REFERENCES dbo.Produto (id)
     );
 END
 GO
@@ -126,8 +125,8 @@ BEGIN
         id INT IDENTITY(1,1) PRIMARY KEY,
         nota INT NOT NULL,
         comentario VARCHAR(255),
-        usuario INT NOT NULL,
-        FOREIGN KEY (usuario) REFERENCES dbo.Usuario (id)
+        usuario_id INT NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
     );
 END
 GO
