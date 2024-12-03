@@ -1,7 +1,13 @@
-![reveste](https://github.com/user-attachments/assets/9e8730c8-f4a4-4541-9bf5-24df1af0a221)
+# ReVeste | Banco de Dados
+Este repositório contém o modelo de banco de dados e os scripts de criação e manipulação utilizados no projeto de e-commerce da EarthMoon. O banco foi projetado para funcionar tanto em MySQL quanto em SQL Server, abrangendo todas as tabelas, relacionamentos e restrições necessárias para o funcionamento completo da aplicação.
 
-Banco de dados da ReVeste
+## Estrutura do Banco
+- O banco de dados é composto por entidades como **Produto**, **Usuário**, **Pedido**, **ItemPedido**, **Imagem**, **Feedback**, **Endereço** e **Entrega**, com os devidos relacionamentos.
+- O **DER** (Diagrama de Entidade-Relacionamento) está disponível para consulta e representa visualmente os relacionamentos entre as tabelas.
 
-DER:
+## Tecnologias Utilizadas
+- **MySQL**
+- **SQL Server**
 
-![DER - ReVeste](https://github.com/user-attachments/assets/4df50f7b-a373-48a9-9eff-5d5d3046efe2)
+## Diagrama de Entidade-Relacionamento
+![DER - ReVeste](https://github.com/user-attachments/assets/bcb51ebe-67e4-4216-bcdb-259ebe794726)
