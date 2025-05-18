@@ -90,14 +90,14 @@ IF OBJECT_ID('dbo.Pedido', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Pedido (
         id INT IDENTITY(1,1) PRIMARY KEY,
-        data_hora timestamp NOT NULL,
-        data_pagamento DATE NOT NULL,
-        data_conclusao DATE NOT NULL,
-        tipo_frete VARCHAR(45) NOT NULL,
-        valor_frete DECIMAL(18, 2) NOT NULL,
-        valor_total DECIMAL(18, 2) NOT NULL,
-        status VARCHAR(45) NOT NULL,
-        usuario_id INT NOT NULL,
+        data_hora DATETIME,
+        data_pagamento DATE,
+        data_conclusao DATE,
+        tipo_frete VARCHAR(45),
+        valor_frete DECIMAL(18, 2),
+        valor_total DECIMAL(18, 2),
+        status VARCHAR(45),
+        usuario_id INT,
         FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
     );
 END
