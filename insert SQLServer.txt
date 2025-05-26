@@ -22,7 +22,7 @@ VALUES
 
 ('Colar Moon', 'UNICO', 'ACESSORIO', 42.90, 'Novo, feito a mão!', 5, 'DISPONIVEL'),
 
-('Blusinha Witch 1', 'G', 'ROUPA', 199.90, 'Essa barra assimétrica é o charme dela 🥹. Condição 10/10. Medidas APROXIMADAS: Busto 94cm, cintura é soltinha ', 1, 'DISPONIVEL'),
+('Blusinha Witch 1', 'G', 'ROUPA', 199.90, 'Essa barra assimétrica é o charme dela. Condição 10/10. Medidas APROXIMADAS: Busto 94cm, cintura é soltinha ', 1, 'DISPONIVEL'),
 
 ('Blusinha witch 2', 'P', 'ROUPA', 69.90, 'Mais uma no modelinho assimétrico. Condição 9/10. Medidas APROXIMADAS: Cintura 70cm, busto 72cm ', 4, 'DISPONIVEL'),
 
