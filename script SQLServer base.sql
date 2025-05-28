@@ -7,6 +7,7 @@ IF OBJECT_ID('dbo.Entrega', 'U') IS NOT NULL DROP TABLE dbo.Entrega;
 IF OBJECT_ID('dbo.Produto', 'U') IS NOT NULL DROP TABLE dbo.Produto;
 IF OBJECT_ID('dbo.Endereco', 'U') IS NOT NULL DROP TABLE dbo.Endereco;
 IF OBJECT_ID('dbo.Usuario', 'U') IS NOT NULL DROP TABLE dbo.Usuario;
+IF OBJECT_ID('dbo.imagens_feedback', 'U') IS NOT NULL DROP TABLE dbo.imagens_feedback;
 GO
 
 -- Criação da tabela Usuario
@@ -65,7 +66,7 @@ BEGIN
         data_cadastro DATE,
         data_venda DATE,
         status VARCHAR(10) 
-            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO')),
+            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO', 'AVALIADO'))
     );
 END
 GO
@@ -122,11 +123,34 @@ GO
 IF OBJECT_ID('dbo.Feedback', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Feedback (
-        id INT IDENTITY(1,1) PRIMARY KEY,
-        nota INT ,
+        id INT IDENTITY(1,1) PRIMARY KEY ,
         comentario VARCHAR(255),
+        pedido_id INT ,
         usuario_id INT ,
-        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
+        item_pedido_id INT ,
+
+        FOREIGN KEY (pedido_id) REFERENCES dbo.Pedido (id),
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id),
+        FOREIGN KEY (item_pedido_id) REFERENCES dbo.item_pedido (id)
+    );
+END
+GO
+
+-- Criação da tabela ImagensFeedback
+IF OBJECT_ID('dbo.ImagensFeedback', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ImagensFeedback (
+        idImagensFeedback INT IDENTITY(1,1) PRIMARY KEY,
+        feedback_id INT,
+        pedido_id INT,
+        usuario_id INT,
+        itemPedido_id INT,
+        ImagemUrl VARCHAR(500),
+
+        FOREIGN KEY (feedback_id) REFERENCES dbo.Feedback(id),
+        FOREIGN KEY (pedido_id) REFERENCES dbo.Pedido(id),
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario(id),
+        FOREIGN KEY (itemPedido_id) REFERENCES dbo.ItemPedido(id)
     );
 END
 GO
