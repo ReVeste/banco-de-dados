@@ -1,7 +1,8 @@
 -- Verifica e exclui as tabelas caso já existam, para evitar conflitos
+IF OBJECT_ID('dbo.imagensFeedback', 'U') IS NOT NULL DROP TABLE dbo.imagensFeedback;
 IF OBJECT_ID('dbo.Imagem', 'U') IS NOT NULL DROP TABLE dbo.Imagem;
 IF OBJECT_ID('dbo.Feedback', 'U') IS NOT NULL DROP TABLE dbo.Feedback;
-IF OBJECT_ID('dbo.item_pedido', 'U') IS NOT NULL DROP TABLE dbo.item_pedido;
+IF OBJECT_ID('dbo.itemPedido', 'U') IS NOT NULL DROP TABLE dbo.itemPedido;
 IF OBJECT_ID('dbo.Pedido', 'U') IS NOT NULL DROP TABLE dbo.Pedido;
 IF OBJECT_ID('dbo.Entrega', 'U') IS NOT NULL DROP TABLE dbo.Entrega;
 IF OBJECT_ID('dbo.Produto', 'U') IS NOT NULL DROP TABLE dbo.Produto;
@@ -56,16 +57,16 @@ BEGIN
     CREATE TABLE dbo.Produto (
         id INT IDENTITY(1,1) PRIMARY KEY,
         nome VARCHAR(100) ,
-        tamanho VARCHAR(10) ,
-        categoria VARCHAR(45) ,
         marca VARCHAR(45),
-        preco DECIMAL(18, 2) ,
         descricao TEXT ,
+        preco DECIMAL(18, 2) ,
+        categoria VARCHAR(45) ,
         qtd_estoque INT ,
-        data_cadastro DATE,
-        data_venda DATE,
+        tamanho VARCHAR(10) ,
         status VARCHAR(10) 
-            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO')),
+            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO', 'AVALIADO')),
+        data_cadastro DATE,
+        data_venda DATE
     );
 END
 GO
@@ -120,13 +121,35 @@ GO
 
 -- Criação da tabela Feedback
 IF OBJECT_ID('dbo.Feedback', 'U') IS NULL
-BEGIN
+BEGIN   
     CREATE TABLE dbo.Feedback (
-        id INT IDENTITY(1,1) PRIMARY KEY,
-        nota INT ,
+        id INT IDENTITY(1,1) PRIMARY KEY ,
         comentario VARCHAR(255),
+        pedido_id INT ,
         usuario_id INT ,
+        item_pedido_id INT ,
+
+        FOREIGN KEY (item_pedido_id, pedido_id, produto_id) REFERENCES dbo.item_pedido(id, pedido_id, produto_id),
         FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
+    );
+END
+GO
+
+-- Criação da tabela ImagensFeedback
+IF OBJECT_ID('dbo.ImagensFeedback', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ImagensFeedback (
+        idImagensFeedback INT IDENTITY(1,1) PRIMARY KEY,
+        feedback_id INT,
+        pedido_id INT,
+        usuario_id INT,
+        itemPedido_id INT,
+        ImagemUrl VARCHAR(500),
+
+        FOREIGN KEY (feedback_id) REFERENCES dbo.Feedback(id),
+        FOREIGN KEY (pedido_id) REFERENCES dbo.Pedido(id),
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario(id),
+        FOREIGN KEY (itemPedido_id) REFERENCES dbo.ItemPedido(id)
     );
 END
 GO
