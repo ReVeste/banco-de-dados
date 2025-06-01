@@ -1,13 +1,13 @@
 -- Verifica e exclui as tabelas caso já existam, para evitar conflitos
+IF OBJECT_ID('dbo.imagensFeedback', 'U') IS NOT NULL DROP TABLE dbo.imagensFeedback;
 IF OBJECT_ID('dbo.Imagem', 'U') IS NOT NULL DROP TABLE dbo.Imagem;
 IF OBJECT_ID('dbo.Feedback', 'U') IS NOT NULL DROP TABLE dbo.Feedback;
-IF OBJECT_ID('dbo.item_pedido', 'U') IS NOT NULL DROP TABLE dbo.item_pedido;
+IF OBJECT_ID('dbo.itemPedido', 'U') IS NOT NULL DROP TABLE dbo.itemPedido;
 IF OBJECT_ID('dbo.Pedido', 'U') IS NOT NULL DROP TABLE dbo.Pedido;
 IF OBJECT_ID('dbo.Entrega', 'U') IS NOT NULL DROP TABLE dbo.Entrega;
 IF OBJECT_ID('dbo.Produto', 'U') IS NOT NULL DROP TABLE dbo.Produto;
 IF OBJECT_ID('dbo.Endereco', 'U') IS NOT NULL DROP TABLE dbo.Endereco;
 IF OBJECT_ID('dbo.Usuario', 'U') IS NOT NULL DROP TABLE dbo.Usuario;
-IF OBJECT_ID('dbo.imagens_feedback', 'U') IS NOT NULL DROP TABLE dbo.imagens_feedback;
 GO
 
 -- Criação da tabela Usuario
@@ -57,16 +57,16 @@ BEGIN
     CREATE TABLE dbo.Produto (
         id INT IDENTITY(1,1) PRIMARY KEY,
         nome VARCHAR(100) ,
-        tamanho VARCHAR(10) ,
-        categoria VARCHAR(45) ,
         marca VARCHAR(45),
-        preco DECIMAL(18, 2) ,
         descricao TEXT ,
+        preco DECIMAL(18, 2) ,
+        categoria VARCHAR(45) ,
         qtd_estoque INT ,
-        data_cadastro DATE,
-        data_venda DATE,
+        tamanho VARCHAR(10) ,
         status VARCHAR(10) 
-            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO', 'AVALIADO'))
+            CHECK (status IN ('RESERVADO', 'DISPONIVEL', 'VENDIDO', 'AVALIADO')),
+        data_cadastro DATE,
+        data_venda DATE
     );
 END
 GO
@@ -121,7 +121,7 @@ GO
 
 -- Criação da tabela Feedback
 IF OBJECT_ID('dbo.Feedback', 'U') IS NULL
-BEGIN
+BEGIN   
     CREATE TABLE dbo.Feedback (
         id INT IDENTITY(1,1) PRIMARY KEY ,
         comentario VARCHAR(255),
@@ -129,9 +129,8 @@ BEGIN
         usuario_id INT ,
         item_pedido_id INT ,
 
-        FOREIGN KEY (pedido_id) REFERENCES dbo.Pedido (id),
-        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id),
-        FOREIGN KEY (item_pedido_id) REFERENCES dbo.item_pedido (id)
+        FOREIGN KEY (item_pedido_id, pedido_id, produto_id) REFERENCES dbo.item_pedido(id, pedido_id, produto_id),
+        FOREIGN KEY (usuario_id) REFERENCES dbo.Usuario (id)
     );
 END
 GO
