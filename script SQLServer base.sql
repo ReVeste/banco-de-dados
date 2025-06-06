@@ -2,7 +2,7 @@
 IF OBJECT_ID('dbo.imagensFeedback', 'U') IS NOT NULL DROP TABLE dbo.imagensFeedback;
 IF OBJECT_ID('dbo.Imagem', 'U') IS NOT NULL DROP TABLE dbo.Imagem;
 IF OBJECT_ID('dbo.Feedback', 'U') IS NOT NULL DROP TABLE dbo.Feedback;
-IF OBJECT_ID('dbo.itemPedido', 'U') IS NOT NULL DROP TABLE dbo.itemPedido;
+IF OBJECT_ID('dbo.item_Pedido', 'U') IS NOT NULL DROP TABLE dbo.item_Pedido;
 IF OBJECT_ID('dbo.Pedido', 'U') IS NOT NULL DROP TABLE dbo.Pedido;
 IF OBJECT_ID('dbo.Entrega', 'U') IS NOT NULL DROP TABLE dbo.Entrega;
 IF OBJECT_ID('dbo.Produto', 'U') IS NOT NULL DROP TABLE dbo.Produto;

@@ -8,7 +8,7 @@ INSERT INTO Usuario (nome, cpf, telefone, email, senha, tipo, ativo)
     ('Ryan Miranda', '31912345678', '11934567890', 'ryan.miranda@sptech.school', '$2a$10$0/TKTGxdREbWaWjWYhwf6e9P1fPOAMMNqEnZgOG95jnSkHSfkkIrC', 'cliente', 1),
     ('Karen Beatriz', '31956789012', '11987651234', 'karen.beatriz@sptech.school', '$2a$10$0/TKTGxdREbWaWjWYhwf6e9P1fPOAMMNqEnZgOG95jnSkHSfkkIrC', 'cliente', 1);
 
-INSERT INTO Produto (nome, tamanho, categoria, preco, descricao, qtdEstoque, status)
+INSERT INTO Produto (nome, tamanho, categoria, preco, descricao, qtd_estoque, status)
 VALUES
 ('Corpete Blood', 'P', 'ROUPA', 49.90, 'Todo com detalhes de pedrarias! Com 4 barbatanas de sustentação. O zíper dele é comprido mesmo, mas dentro tem tipo um botãozinho pra deixar ele preso e não aparecer. Condição 9/10. Medidas APROXIMADAS: Largura 66cm, busto 72cm', 1, 'DISPONIVEL'),
 
@@ -54,7 +54,7 @@ VALUES
 ('Jaqueta Elvira', 'M', 'ROUPA', 58.00, 'Couro legítimo • peça CGC (no mínimo 20 anos de existência!!) • modelo acinturado • condição 9/10, está faltando um botão ', 1, 'DISPONIVEL'),
 ('Jaqueta Spikes', 'P', 'ROUPA', 40.00, 'Condição 9/10 • com detalhes em spikes, perfeita', 1, 'DISPONIVEL');
 
-INSERT INTO Imagem (produto_id, imagemUrl)
+INSERT INTO Imagem (produto_id, imagem_url)
 VALUES
     (1, 'https://i.imgur.com/jSvavfD.jpeg'),
     (1, 'https://i.imgur.com/AJiQSmG.jpeg'),
