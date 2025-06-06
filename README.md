@@ -10,4 +10,4 @@ Este repositório contém o modelo de banco de dados e os scripts de criação e
 - **SQL Server**
 
 ## Diagrama de Entidade-Relacionamento
-![DER - ReVeste](https://github.com/user-attachments/assets/bcb51ebe-67e4-4216-bcdb-259ebe794726)
+![DER - ReVeste](/DER%20-%20v3.3.png)
