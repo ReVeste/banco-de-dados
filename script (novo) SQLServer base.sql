@@ -1,10 +1,8 @@
--- ENUMs como VARCHAR
--- Certifique-se de validar os valores no backend
 
--- ESSE SCRIPT NÃO ESTA TOTALMENTE CORRETO !!
+
 
 CREATE TABLE Usuario (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     nome VARCHAR(255),
     cpf VARCHAR(14),
     telefone VARCHAR(20),
@@ -17,7 +15,7 @@ CREATE TABLE Usuario (
 );
 
 CREATE TABLE Endereco (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     apelido VARCHAR(100),
     cep VARCHAR(10),
     rua VARCHAR(255),
@@ -30,7 +28,7 @@ CREATE TABLE Endereco (
 );
 
 CREATE TABLE Produto (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     nome VARCHAR(255),
     marca VARCHAR(100),
     descricao TEXT,
@@ -44,7 +42,7 @@ CREATE TABLE Produto (
 );
 
 CREATE TABLE Pedido (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     data_hora DATETIME,
     data_pagamento DATE,
     data_conclusao DATE,
@@ -53,48 +51,41 @@ CREATE TABLE Pedido (
     valor_total FLOAT,
     status VARCHAR(50),
     usuario_id INT FOREIGN KEY REFERENCES Usuario(id)
-    -- Adicionar chave estrangeira para Entrega se for relacionamento um-para-um
-    -- entrega_id INT UNIQUE FOREIGN KEY REFERENCES Entrega(id)
 );
 
-CREATE TABLE Item_Pedido ( -- Renomeado para ItemPedido
-    id INT PRIMARY KEY IDENTITY,
+CREATE TABLE item_pedido (
+    id INT PRIMARY KEY IDENTITY(1,1),
     pedido_id INT FOREIGN KEY REFERENCES Pedido(id),
     produto_id INT FOREIGN KEY REFERENCES Produto(id),
     quantidade INT
 );
 
 CREATE TABLE Feedback (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     comentario TEXT,
     pedido_id INT FOREIGN KEY REFERENCES Pedido(id),
     usuario_id INT FOREIGN KEY REFERENCES Usuario(id),
-    item_Pedido_id INT FOREIGN KEY REFERENCES Item_Pedido(id) -- Referenciando a tabela renomeada
 );
 
 CREATE TABLE Imagem (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     produto_id INT FOREIGN KEY REFERENCES Produto(id),
-    imagemUrl VARCHAR(500)
+    imagem_url VARCHAR(500)
 );
 
-CREATE TABLE ImagensFeedback (
-    id INT PRIMARY KEY IDENTITY,
+CREATE TABLE imagens_feedback (
+    id INT PRIMARY KEY IDENTITY(1,1),
     feedback_id INT FOREIGN KEY REFERENCES Feedback(id),
-    -- Considerar remover as próximas chaves estrangeiras se não forem estritamente necessárias
     pedido_id INT FOREIGN KEY REFERENCES Pedido(id),
     usuario_id INT FOREIGN KEY REFERENCES Usuario(id),
-    item_pedido_id INT FOREIGN KEY REFERENCES Item_Pedido(id), -- Referenciando a tabela renomeada
     imagem_url VARCHAR(500)
 );
 
 CREATE TABLE Entrega (
-    id INT PRIMARY KEY IDENTITY,
+    id INT PRIMARY KEY IDENTITY(1,1),
     previsto_para VARCHAR(100),
     status VARCHAR(50),
     codigo_rastreio VARCHAR(100),
     data_hora_envio DATETIME,
     endereco_id INT FOREIGN KEY REFERENCES Endereco(id)
-    -- Adicionar chave estrangeira para Pedido se for relacionamento um-para-um e a FK estiver aqui
-    -- pedido_id INT UNIQUE FOREIGN KEY REFERENCES Pedido(id)
 );
